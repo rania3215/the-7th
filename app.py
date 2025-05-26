@@ -105,9 +105,3 @@ if uploaded_file is not None:
     prob_dict = {classes[i]: float(probabilities[i]) for i in range(len(classes))}
     st.bar_chart(pd.DataFrame(prob_dict, index=[0]))
 
-    # Debug info
-    st.subheader("Debug Info:")
-    st.write("Predicted Index:", predicted_idx)
-    st.write("Raw Softmax Output:", probabilities)
-    st.write("Sample weights (resnet50.conv1[0][0]):")
-    st.write(model.resnet50.conv1.weight[0][0])
