@@ -13,13 +13,13 @@ class EnsembleNet(nn.Module):
     def __init__(self, num_classes=7):
         super(EnsembleNet, self).__init__()
 
-        self.resnet50 = models.resnet50(pretrained=False)
+        self.resnet50 = models.resnet50(pretrained=True)
         self.resnet50.fc = nn.Identity()
 
-        self.resnet101 = models.resnet101(pretrained=False)
+        self.resnet101 = models.resnet101(pretrained=True)
         self.resnet101.fc = nn.Identity()
 
-        self.efficientnet = EfficientNet.from_name('efficientnet-b0')
+        self.efficientnet = EfficientNet.from_pretrained('efficientnet-b0')
         self.efficientnet._fc = nn.Identity()
 
         self.classifier = nn.Sequential(
@@ -37,13 +37,10 @@ class EnsembleNet(nn.Module):
         return self.classifier(x)
 
 # -------------------------------
-
-# -------------------------------
 MODEL_ID = "1-x445n-cKYNiWLPWsYaLnHKCyX465NAj"
 MODEL_URL = f"https://drive.google.com/uc?id={MODEL_ID}"
 MODEL_PATH = "7_emotions_model.pth"
 
-# Download the model if not exists
 if not os.path.exists(MODEL_PATH):
     with st.spinner("Downloading model..."):
         gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
@@ -58,7 +55,6 @@ def load_model():
 
 model = load_model()
 
-# -------------------------------
 classes = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 emotion_comments = {
     'Angry': "You look angry. Try to calm down by taking deep breaths: inhale slowly through your nose and exhale through your mouth.",
@@ -70,21 +66,17 @@ emotion_comments = {
     'Neutral': "Okay! You're feeling neutral. Stay balanced!"
 }
 
-# -------------------------------
-
-# -------------------------------
 def preprocess_image(img):
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],  # ImageNet
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])
     ])
-    img = img.convert("RGB")  
+    img = img.convert("RGB")
     img = transform(img).unsqueeze(0)
     return img
 
-# -------------------------------
 # -------------------------------
 st.title("The 7th Emotions")
 st.write("**Done by:** Rania Otoum & Gazal Naser")
@@ -106,9 +98,16 @@ if uploaded_file is not None:
             emotion = classes[predicted_idx]
             comment = emotion_comments[emotion]
 
-    st.markdown(f"### your Predicted Emotion: **{emotion}**")
+    st.markdown(f"### Your Predicted Emotion: **{emotion}**")
     st.info(comment)
 
     st.subheader("Emotion Probabilities:")
     prob_dict = {classes[i]: float(probabilities[i]) for i in range(len(classes))}
-    st.bar_chart(pd.DataFrame(prob_dict, index=[0]))  
+    st.bar_chart(pd.DataFrame(prob_dict, index=[0]))
+
+    # Debug info
+    st.subheader("Debug Info:")
+    st.write("Predicted Index:", predicted_idx)
+    st.write("Raw Softmax Output:", probabilities)
+    st.write("Sample weights (resnet50.conv1[0][0]):")
+    st.write(model.resnet50.conv1.weight[0][0])
