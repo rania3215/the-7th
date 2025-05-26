@@ -5,7 +5,9 @@ import torch.nn.functional as F
 from torchvision import transforms, models
 from efficientnet_pytorch import EfficientNet
 from PIL import Image
-
+import gdown
+import os
+import pandas as pd
 
 class EnsembleNet(nn.Module):
     def __init__(self, num_classes=7):
@@ -37,17 +39,24 @@ class EnsembleNet(nn.Module):
 # -------------------------------
 
 # -------------------------------
+MODEL_ID = "1-x445n-cKYNiWLPWsYaLnHKCyX465NAj"
+MODEL_URL = f"https://drive.google.com/uc?id={MODEL_ID}"
+MODEL_PATH = "7_emotions_model.pth"
+
+# Download the model if not exists
+if not os.path.exists(MODEL_PATH):
+    with st.spinner("Downloading model..."):
+        gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+
 @st.cache_resource
 def load_model():
     model = EnsembleNet(num_classes=7)
-    state_dict = torch.load("7_emotions_model.pth", map_location=torch.device("cpu"))
+    state_dict = torch.load(MODEL_PATH, map_location=torch.device("cpu"))
     model.load_state_dict(state_dict)
     model.eval()
     return model
 
 model = load_model()
-
-# -------------------------------
 
 # -------------------------------
 classes = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
@@ -62,16 +71,7 @@ emotion_comments = {
 }
 
 # -------------------------------
-import gdown
-import os
 
-MODEL_PATH = "7_emotions_model.pth"
-MODEL_URL = "1-x445n-cKYNiWLPWsYaLnHKCyX465NAj" 
-
-
-if not os.path.exists(MODEL_PATH):
-    with st.spinner("Downloading model..."):
-        gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
 # -------------------------------
 def preprocess_image(img):
     transform = transforms.Compose([
@@ -106,11 +106,9 @@ if uploaded_file is not None:
             emotion = classes[predicted_idx]
             comment = emotion_comments[emotion]
 
-    st.markdown(f"###  Predicted Emotion: **{emotion}**")
+    st.markdown(f"### your Predicted Emotion: **{emotion}**")
     st.info(comment)
 
-    
     st.subheader("Emotion Probabilities:")
     prob_dict = {classes[i]: float(probabilities[i]) for i in range(len(classes))}
-    st.bar_chart(prob_dict)
-
+    st.bar_chart(pd.DataFrame(prob_dict, index=[0]))  
