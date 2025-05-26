@@ -79,7 +79,7 @@ def preprocess_image(img):
 
 # -------------------------------
 st.title("The 7th Emotions")
-st.write("**Done by:** Rania Otoum & Gazal Naser")
+st.write("**Done by:** Rania Otoum & Ghazal dabbas")
 st.write("Upload an image and get your emotion prediction:")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png", "bmp", "webp"])
