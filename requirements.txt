@@ -3,3 +3,4 @@ torch
 torchvision
 efficientnet_pytorch
 Pillow
+gdown
