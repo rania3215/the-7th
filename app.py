@@ -68,11 +68,20 @@ emotion_comments = {
 
 def preprocess_image(img):
     transform = transforms.Compose([
+   transforms.RandomResizedCrop(224),  # Random crop and resize to 224x224
+    transforms.RandomHorizontalFlip(),
+    transforms.RandomRotation(20),
         transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                             std=[0.229, 0.224, 0.225])
+    transforms.ColorJitter(brightness=0.2, contrast=0.2),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) 
     ])
+
+   
+
+
+
+
     img = img.convert("RGB")
     img = transform(img).unsqueeze(0)
     return img
@@ -124,7 +133,7 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Your Image", use_column_width=True)
+    st.image(image, caption="Your Image", use_container_width=True)
 
     img_tensor = preprocess_image(image)
 
