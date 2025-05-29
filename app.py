@@ -81,7 +81,14 @@ def preprocess_image(img):
 st.title("The 7th Emotions")
 st.write("**Done by:** Rania Otoum & Ghazal dabbas")
 st.write("Upload an image and get your emotion prediction:")
+# Set page config (optional)
+st.set_page_config(page_title="My App", page_icon="🧠", layout="centered")
 
+# Display logo
+st.image("logo.png", width=200)  # Adjust width as needed
+
+st.title("Welcome to My App")
+st.write("This is a simple Streamlit app with a logo.")
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png", "bmp", "webp"])
 
 if uploaded_file is not None:
