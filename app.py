@@ -93,8 +93,8 @@ st.markdown("""
         position: fixed;
         top: 60px;
         right: 40px;
-        width: 90px;
-        height: 90px;
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
         object-fit: cover;
         border: 2px solid #ddd;
