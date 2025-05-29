@@ -84,36 +84,39 @@ st.write("Upload an image and get your emotion prediction:")
 # ----------------
 import streamlit as st
 import base64
+logo = Image.open("logo.png")
 
-def get_base64_image(""C:\Users\user\Downloads\7th_emotions_web\logo.png""):
-    with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()
-
-logo_base64 = get_base64_image("logo.png")
-# Inject logo with circular shape at upper right
-st.markdown(f"""
+# Inject CSS for floating image
+st.markdown("""
     <style>
-        .logo-container {{
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 999;
-        }}
-        .logo {{
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ddd;
-            box-shadow: 0 0 6px rgba(0,0,0,0.2);
-        }}
+    .logo-img {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+        box-shadow: 0 0 6px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
     </style>
-
-    <div class="logo-container">
-        <img class="logo" src="data:image/png;base64,{logo_base64}" alt="Logo">
-    </div>
 """, unsafe_allow_html=True)
 
+# Encode logo to Base64
+def get_base64_image(image):
+    from io import BytesIO
+    buffered = BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
+
+img_base64 = get_base64_image(logo)
+
+# Add logo image as floating circular image
+st.markdown(f"""
+    <img src="data:image/png;base64,{img_base64}" class="logo-img">
+""", unsafe_allow_html=True)
 #=============
 
 
