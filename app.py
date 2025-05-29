@@ -85,7 +85,7 @@ st.write("Upload an image and get your emotion prediction:")
 import streamlit as st
 import base64
 
-def get_base64_image(""C:\Users\user\Downloads\7th_emotions_web\logo.png.png""):
+def get_base64_image(""C:\Users\user\Downloads\7th_emotions_web\logo.png""):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
