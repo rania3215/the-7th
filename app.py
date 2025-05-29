@@ -81,27 +81,42 @@ def preprocess_image(img):
 st.title("The 7th Emotions")
 st.write("**Done by:** Rania Otoum & Ghazal dabbas")
 st.write("Upload an image and get your emotion prediction:")
+# ----------------
+import streamlit as st
+import base64
 
-st.markdown("""
+def get_base64_image(""C:\Users\user\Downloads\7th_emotions_web\logo.png.png""):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+logo_base64 = get_base64_image("logo.png")
+# Inject logo with circular shape at upper right
+st.markdown(f"""
     <style>
-        .logo-container {
+        .logo-container {{
             position: absolute;
             top: 20px;
             right: 20px;
-        }
-        .logo {
+            z-index: 999;
+        }}
+        .logo {{
             width: 80px;
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ccc;
-        }
+            border: 2px solid #ddd;
+            box-shadow: 0 0 6px rgba(0,0,0,0.2);
+        }}
     </style>
 
     <div class="logo-container">
-        <img class="logo" src="Screenshot 2025-05-29 120222.png" alt="Logo">
+        <img class="logo" src="data:image/png;base64,{logo_base64}" alt="Logo">
     </div>
 """, unsafe_allow_html=True)
+
+#=============
+
+
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png", "bmp", "webp"])
 
 if uploaded_file is not None:
