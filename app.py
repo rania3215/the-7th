@@ -94,7 +94,7 @@ st.markdown("""
         top: 60px;
         right: 40px;
         width: 90px;
-        height: 900px;
+        height: 90px;
         border-radius: 50%;
         object-fit: cover;
         border: 2px solid #ddd;
