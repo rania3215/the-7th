@@ -93,11 +93,11 @@ st.markdown("""
         position: fixed;
         top: 60px;
         right: 40px;
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
         border-radius: 50%;
         object-fit: cover;
-        border: 2px solid #ddd;
+        
         box-shadow: 0 0 6px rgba(0,0,0,0.2);
         z-index: 999;
     }
