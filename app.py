@@ -91,10 +91,10 @@ st.markdown("""
     <style>
     .logo-img {
         position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 80px;
-        height: 80px;
+        top: 60px;
+        right: 40px;
+        width: 90px;
+        height: 900px;
         border-radius: 50%;
         object-fit: cover;
         border: 2px solid #ddd;
