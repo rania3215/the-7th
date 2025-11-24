@@ -5,3 +5,5 @@ efficientnet_pytorch
 Pillow
 gdown
 pandas
+openai>=1.0.0
+streamlit
