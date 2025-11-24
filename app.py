@@ -149,3 +149,43 @@ if uploaded_file is not None:
     prob_dict = {classes[i]: float(probabilities[i]) for i in range(len(classes))}
     st.bar_chart(pd.DataFrame(prob_dict, index=[0]))
 
+
+from openai import OpenAI
+
+client = OpenAI(api_key="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")
+
+st.subheader("💬 Chat with AI")
+
+# Initialize chat history
+if "chat_messages" not in st.session_state:
+    st.session_state.chat_messages = []
+
+# Display previous messages
+for msg in st.session_state.chat_messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+# Chat input
+user_message = st.chat_input("Type your message here...")
+
+if user_message:
+    # Add user message
+    st.session_state.chat_messages.append({"role": "user", "content": user_message})
+    with st.chat_message("user"):
+        st.write(user_message)
+
+    # AI response
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=st.session_state.chat_messages
+    )
+
+    bot_reply = response.choices[0].message["content"]
+
+    # Add bot reply
+    st.session_state.chat_messages.append(
+        {"role": "assistant", "content": bot_reply}
+    )
+
+    with st.chat_message("assistant"):
+        st.write(bot_reply)
