@@ -85,7 +85,7 @@ def preprocess_image(img):
 
 # -------------------------------
 st.title("The 7th Emotions")
-st.write("**Done by:** Rania Otoum & Ghazal dabbas")
+st.write("**Done by:** Rania Otoum ")
 st.write("Upload an image and get your emotion prediction:")
 # ----------------
 import streamlit as st
